@@ -9,13 +9,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build with Theos
-        uses: theos/build-action@v2
+      - name: Setup Theos
+        uses: Randomblock1/theos-action@main
         with:
-          scheme: roothide
-          sdk: 17.0
+          theos-sdks: 17.0
 
-      - name: Upload deb
+      - name: Build package (RootHide)
+        run: make package THEOS_PACKAGE_SCHEME=roothide FINALPACKAGE=1
+
+      - name: Upload deb artifact
         uses: actions/upload-artifact@v4
         with:
           name: AutoOnlineWallpaper-deb
