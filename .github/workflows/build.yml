@@ -14,9 +14,12 @@ jobs:
 
       - name: Setup Theos
         uses: beerpiss/theos-action@v1
+        with:
+          theos-sdks: 'https://github.com/DavidDev42/sdks'  # 拉取包含 iOS 16/17 最新 SDK 库
 
-      - name: Build deb package
-        run: make package FINALPACKAGE=1
+      - name: Build RootHide deb package
+        run: |
+          make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=roothide
 
       - name: Upload deb artifact
         uses: actions/upload-artifact@v4
