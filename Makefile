@@ -12,6 +12,3 @@ AutoOnlineWallpaper_FRAMEWORKS = UIKit SystemConfiguration CoreTelephony
 AutoOnlineWallpaper_PRIVATE_FRAMEWORKS = PaperBoardUI
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-
-after-install::
-	install.exec "sbreload || killall -9 SpringBoard || true"
