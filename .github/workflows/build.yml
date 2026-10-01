@@ -8,18 +8,19 @@ jobs:
   build:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Setup RootHide Theos
-        uses: beerpiss/theos-action@v1
-        with:
-          theos-src: 'https://github.com/roothide/theos'   # 必须使用 RootHide 专属 Theos
-          theos-sdks: 'https://github.com/DavidDev42/sdks'  # 提供 iOS 16/17 最新 SDK
+      - name: Setup RootHide Theos & SDKs
+        run: |
+          git clone --recursive https://github.com/roothide/theos.git $HOME/theos
+          git clone https://github.com/DavidDev42/sdks.git $HOME/theos/sdks
 
       - name: Build RootHide deb package
         run: |
+          export THEOS=$HOME/theos
           make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=roothide
 
       - name: Upload deb artifact
