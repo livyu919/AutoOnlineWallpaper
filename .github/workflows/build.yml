@@ -12,10 +12,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Theos
+      - name: Setup RootHide Theos
         uses: beerpiss/theos-action@v1
         with:
-          theos-sdks: 'https://github.com/DavidDev42/sdks'  # 拉取包含 iOS 16/17 最新 SDK 库
+          theos-src: 'https://github.com/roothide/theos'   # 必须使用 RootHide 专属 Theos
+          theos-sdks: 'https://github.com/DavidDev42/sdks'  # 提供 iOS 16/17 最新 SDK
 
       - name: Build RootHide deb package
         run: |
