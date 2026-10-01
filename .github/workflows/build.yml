@@ -9,7 +9,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      # 1. 拉取当前项目源码 (版本修正为 v4)
+      # 1. 拉取当前项目源码 (修正为 v4)
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -19,7 +19,7 @@ jobs:
         run: |
           set -e
 
-          # SSH -> HTTPS，避免 GitHub SSH 鉴权问题
+          # SSH -> HTTPS，规避 GitHub 鉴权问题
           git config --global url."https://github.com/".insteadOf "git@github.com:"
 
           # 清理旧 Theos
@@ -28,21 +28,24 @@ jobs:
           # 浅克隆 RootHide Theos 主仓库
           git clone --depth 1 https://github.com/roothide/theos.git "$HOME/theos"
 
-          # 容错更新子模块，规避 Exit Code 128 错误
+          # 分离子模块更新步骤，添加容错规避 Exit Code 128
           cd "$HOME/theos"
           git submodule update --init --recursive || true
 
           # 下载 SDK
           git clone --depth 1 https://github.com/DavidDev42/sdks.git "$HOME/theos/sdks"
 
-          # 检查 Theos
-          echo "========== Theos =========="
-          echo "THEOS=$HOME/theos"
-          ls -la "$HOME/theos"
+          # 设置环境变量
+          export THEOS="$HOME/theos"
+          export PATH="$THEOS/bin:$PATH"
 
-          # 检查 SDK
+          echo "========== Theos =========="
+          echo "THEOS=$THEOS"
+          echo "PATH=$PATH"
+          ls -la "$THEOS"
+
           echo "========== SDK =========="
-          ls -la "$HOME/theos/sdks"
+          ls -la "$THEOS/sdks"
 
       # 3. 编译 RootHide deb
       - name: Build RootHide deb package
@@ -51,18 +54,24 @@ jobs:
           set -e
 
           export THEOS="$HOME/theos"
+          export PATH="$THEOS/bin:$PATH"
 
           echo "========== Environment =========="
           echo "THEOS=$THEOS"
+          echo "PATH=$PATH"
 
-          echo "macOS:"
+          echo "========== macOS =========="
           sw_vers
 
-          echo "Architecture:"
+          echo "========== Architecture =========="
           uname -m
 
-          echo "Xcode:"
+          echo "========== Xcode =========="
           xcodebuild -version
+
+          echo "========== Theos =========="
+          ls -la "$THEOS"
+          ls -la "$THEOS/sdks"
 
           echo "========== Build =========="
 
@@ -70,7 +79,19 @@ jobs:
             FINALPACKAGE=1 \
             THEOS_PACKAGE_SCHEME=roothide
 
-      # 4. 上传 deb (版本修正为 v4)
+      # 4. 检查 deb
+      - name: Check deb package
+        shell: bash
+        run: |
+          set -e
+
+          echo "========== Packages =========="
+          ls -lah packages/
+
+          echo "========== DEB =========="
+          find packages -maxdepth 1 -type f -name "*.deb" -print
+
+      # 5. 上传 deb (修正为 v4)
       - name: Upload deb artifact
         uses: actions/upload-artifact@v4
         with:
