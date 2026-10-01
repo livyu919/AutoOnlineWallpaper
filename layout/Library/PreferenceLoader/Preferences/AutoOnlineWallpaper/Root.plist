@@ -2,13 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Items</key>
+	<key>items</key>
 	<array>
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>通用设置</string>
+			<string>自动壁纸轮换</string>
 		</dict>
 		<dict>
 			<key>cell</key>
@@ -18,138 +18,66 @@
 			<key>defaults</key>
 			<string>com.user.autoonlinewallpaper</string>
 			<key>key</key>
-			<string>enable</string>
+			<string>enableAuto</string>
 			<key>label</key>
-			<string>启用插件</string>
-			<key>PostNotification</key>
-			<string>com.user.autoonlinewallpaper.settingschanged</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>壁纸来源模式</string>
+			<string>开启自动轮换</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSSegmentCell</string>
-			<key>defaults</key>
-			<string>com.user.autoonlinewallpaper</string>
-			<key>key</key>
-			<string>mode</string>
+			<string>PSSwitchCell</string>
 			<key>default</key>
-			<integer>0</integer>
-			<key>validTitles</key>
-			<array>
-				<string>网络直链</string>
-				<string>本地路径/文件夹</string>
-			</array>
-			<key>validValues</key>
-			<array>
-				<integer>0</integer>
-				<integer>1</integer>
-			</array>
-			<key>PostNotification</key>
-			<string>com.user.autoonlinewallpaper.settingschanged</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>网络模式参数</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
+			<true/>
 			<key>defaults</key>
 			<string>com.user.autoonlinewallpaper</string>
 			<key>key</key>
-			<string>url</string>
+			<string>useOnlineMode</string>
 			<key>label</key>
-			<string>图片直链</string>
+			<string>在线网络图片模式(关闭则本地文件夹)</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSTextFieldCell</string>
+			<key>defaults</key>
+			<string>com.user.autoonlinewallpaper</string>
+			<key>key</key>
+			<string>onlineImgURL</string>
+			<key>label</key>
+			<string>在线图片链接</string>
 			<key>placeholder</key>
 			<string>https://xxx.jpg</string>
-			<key>noAutoCorrect</key>
-			<true/>
-			<key>autocapitalizationType</key>
-			<integer>0</integer>
-			<key>PostNotification</key>
-			<string>com.user.autoonlinewallpaper.settingschanged</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>本地模式参数</string>
-			<key>footerText</key>
-			<string>填图片全路径，或填文件夹路径（自动随机轮换文件夹内的照片）</string>
 		</dict>
 		<dict>
 			<key>cell</key>
-			<string>PSEditTextCell</string>
+			<string>PSTextFieldCell</string>
 			<key>defaults</key>
 			<string>com.user.autoonlinewallpaper</string>
 			<key>key</key>
-			<string>localPath</string>
-			<key>label</key>
-			<string>本地路径</string>
-			<key>placeholder</key>
-			<string>/var/mobile/Media/Wallpapers</string>
-			<key>noAutoCorrect</key>
-			<true/>
-			<key>autocapitalizationType</key>
-			<integer>0</integer>
-			<key>PostNotification</key>
-			<string>com.user.autoonlinewallpaper.settingschanged</string>
-		</dict>
-
-		<dict>
-			<key>cell</key>
-			<string>PSGroupCell</string>
-			<key>label</key>
-			<string>轮换参数</string>
-			<key>footerText</key>
-			<string>单位秒，建议≥60秒</string>
-		</dict>
-		<dict>
-			<key>cell</key>
-			<string>PSEditTextCell</string>
-			<key>defaults</key>
-			<string>com.user.autoonlinewallpaper</string>
-			<key>key</key>
-			<string>interval</string>
+			<string>intervalTime</string>
 			<key>label</key>
 			<string>轮换间隔(秒)</string>
 			<key>placeholder</key>
 			<string>300</string>
-			<key>isNumeric</key>
-			<true/>
-			<key>keyboard</key>
-			<string>NumbersAndPunctuation</string>
-			<key>PostNotification</key>
-			<string>com.user.autoonlinewallpaper.settingschanged</string>
 		</dict>
-
 		<dict>
 			<key>cell</key>
 			<string>PSButtonCell</string>
 			<key>label</key>
 			<string>立即更换壁纸</string>
-			<key>PostNotification</key>
-			<string>com.user.autoonlinewallpaper.triggernow</string>
+			<key>action</key>
+			<string>manualChangeTap</string>
 		</dict>
-
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
-			<key>footerText</key>
-			<string>AutoOnlineWallpaper iOS 17 Edition ©2026</string>
+			<key>label</key>
+			<string>使用说明</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSStaticTextCell</string>
+			<key>text</key>
+			<string>在线模式：填入直链图片地址；本地模式：图片放到 /var/jb/Library/Application Support/AutoOnlineWallpaper/</string>
 		</dict>
 	</array>
-	<key>Title</key>
-	<string>自动壁纸设置 (iOS 17)</string>
 </dict>
 </plist>
