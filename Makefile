@@ -9,6 +9,5 @@ TWEAK_NAME = AutoOnlineWallpaper
 AutoOnlineWallpaper_FILES = Tweak.xm
 AutoOnlineWallpaper_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 AutoOnlineWallpaper_FRAMEWORKS = UIKit SystemConfiguration CoreTelephony
-AutoOnlineWallpaper_PRIVATE_FRAMEWORKS = PaperBoardUI
 
 include $(THEOS_MAKE_PATH)/tweak.mk
