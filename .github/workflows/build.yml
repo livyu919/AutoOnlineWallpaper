@@ -2,7 +2,7 @@ name: Build Tweak
 on: [push]
 
 permissions:
-  contents: read  # 关键修复：授予读取仓库文件权限
+  contents: read
 
 jobs:
   build:
@@ -12,12 +12,12 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-          
-      - uses: theos/build-action@v2
+          
+      - uses: theos-org/build-action@v2
         with:
           scheme: roothide
           sdk: 17.0
-          
+          
       - uses: actions/upload-artifact@v4
         with:
           name: com.user.autoonlinewallpaper
