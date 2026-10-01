@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Build with Theos
-        uses: theos/build-action@v3
+        uses: theos/build-action@v2
         with:
           scheme: roothide
           sdk: 17.0
