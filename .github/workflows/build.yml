@@ -1,24 +1,4 @@
-name: Build Tweak
-
-on:
-  push:
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: macos-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          submodules: recursive
-
-      - name: Setup RootHide Theos & SDKs
-        run: |
-          git clone --recursive https://github.com/roothide/theos.git $HOME/theos
-          git clone https://github.com/DavidDev42/sdks.git $HOME/theos/sdks
-
-      - name: Build RootHide deb package
+name: Build RootHide deb package
         run: |
           export THEOS=$HOME/theos
           make clean package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=roothide
