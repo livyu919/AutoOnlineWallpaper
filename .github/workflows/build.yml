@@ -13,15 +13,10 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup RootHide Theos & SDKs
+      - name: Setup RootHide Theos and SDKs
         run: |
-          # 1. 强制将 Git 子模块的 SSH 链接重定向为 HTTPS 协议，防止 exit 128 报错
           git config --global url."https://github.com/".insteadOf "git@github.com:"
-          
-          # 2. 浅克隆 RootHide Theos 及其子模块
           git clone --depth=1 --recursive https://github.com/roothide/theos.git $HOME/theos
-          
-          # 3. 浅克隆 SDK（只拉取最新提交，加速编译）
           git clone --depth=1 https://github.com/DavidDev42/sdks.git $HOME/theos/sdks
 
       - name: Build RootHide deb package
