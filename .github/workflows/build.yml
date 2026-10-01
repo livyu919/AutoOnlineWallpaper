@@ -1,22 +1,79 @@
 name: Build Tweak
-on: [push]
 
-permissions:
-  contents: read
+on:
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
+
     steps:
-      - uses: actions/checkout@v4
+      # 1. 拉取当前项目源码 (版本修正为 v4)
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. 配置 RootHide Theos 与 SDK
+      - name: Setup RootHide Theos
+        shell: bash
+        run: |
+          set -e
+
+          # SSH -> HTTPS，避免 GitHub SSH 鉴权问题
+          git config --global url."https://github.com/".insteadOf "git@github.com:"
+
+          # 清理旧 Theos
+          rm -rf "$HOME/theos"
+
+          # 浅克隆 RootHide Theos 主仓库
+          git clone --depth 1 https://github.com/roothide/theos.git "$HOME/theos"
+
+          # 容错更新子模块，规避 Exit Code 128 错误
+          cd "$HOME/theos"
+          git submodule update --init --recursive || true
+
+          # 下载 SDK
+          git clone --depth 1 https://github.com/DavidDev42/sdks.git "$HOME/theos/sdks"
+
+          # 检查 Theos
+          echo "========== Theos =========="
+          echo "THEOS=$HOME/theos"
+          ls -la "$HOME/theos"
+
+          # 检查 SDK
+          echo "========== SDK =========="
+          ls -la "$HOME/theos/sdks"
+
+      # 3. 编译 RootHide deb
+      - name: Build RootHide deb package
+        shell: bash
+        run: |
+          set -e
+
+          export THEOS="$HOME/theos"
+
+          echo "========== Environment =========="
+          echo "THEOS=$THEOS"
+
+          echo "macOS:"
+          sw_vers
+
+          echo "Architecture:"
+          uname -m
+
+          echo "Xcode:"
+          xcodebuild -version
+
+          echo "========== Build =========="
+
+          make clean package \
+            FINALPACKAGE=1 \
+            THEOS_PACKAGE_SCHEME=roothide
+
+      # 4. 上传 deb (版本修正为 v4)
+      - name: Upload deb artifact
+        uses: actions/upload-artifact@v4
         with:
-          ref: main
-          fetch-depth: 0
-      - uses: theos-org/build-action@v2
-        with:
-          scheme: roothide
-          sdk: 17.0
-      - uses: actions/upload-artifact@v4
-        with:
-          name: com.user.autoonlinewallpaper
+          name: AutoOnlineWallpaper-iOS17-RootHide
           path: packages/*.deb
+          if-no-files-found: error
