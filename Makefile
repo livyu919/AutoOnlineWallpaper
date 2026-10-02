@@ -1,6 +1,6 @@
 cat > Makefile <<'EOF'
 ARCHS = arm64 arm64e
-TARGET = iphone:clang:17.0:15.0
+TARGET = iphone:clang:16.5:16.5
 THEOS_PACKAGE_SCHEME = roothide
 
 include $(THEOS)/makefiles/common.mk
@@ -12,7 +12,4 @@ AutoOnlineWallpaper_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 AutoOnlineWallpaper_FRAMEWORKS = UIKit SystemConfiguration CoreTelephony
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-
-after-install::
-	install.exec "killall -9 SpringBoard || true"
 EOF
